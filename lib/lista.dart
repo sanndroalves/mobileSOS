@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'cadastro_screen.dart';    // Importa a tela após o login
 
 class ContatoScreen extends StatefulWidget {
   @override
@@ -8,10 +9,9 @@ class ContatoScreen extends StatefulWidget {
 class _ContatoScreenState extends State<ContatoScreen> {
   // Lista de contatos (apenas um exemplo de dados iniciais)
   List<Map<String, String>> contatos = [
-    {'nome': 'João Silva', 'telefone': '(11) 98765-4321'},
-    {'nome': 'Maria Oliveira', 'telefone': '(21) 98765-4322'},
-    {'nome': 'Carlos Santos', 'telefone': '(31) 98765-4323'},
-    {'nome': 'Ana Souza', 'telefone': '(41) 98765-4324'},
+    {'nome': 'Prof Daniel', 'telefone': '(11) 98765-4321'},
+    {'nome': 'Isabela', 'telefone': '(21) 98765-4322'},
+    {'nome': 'Felipe', 'telefone': '(31) 98765-4323'}, 
   ];
 
   // Função para remover um contato
@@ -32,7 +32,8 @@ class _ContatoScreenState extends State<ContatoScreen> {
           IconButton(
             icon: Icon(Icons.add, color: const Color(0xFFA7005C)),
             onPressed: () {
-              // Adicione aqui a lógica para adicionar novos contatos
+              // Navegar para a tela de cadastro
+              Navigator.push(context, MaterialPageRoute(builder: (context) => CadastroScreen()));
             },
           ),
         ],
@@ -78,13 +79,7 @@ class _ContatoScreenState extends State<ContatoScreen> {
                       ),
                       // Ícones de editar e remover
                       Row(
-                        children: [
-                          IconButton(
-                            icon: Icon(Icons.edit, color: const Color(0xFFA7005C)),
-                            onPressed: () {
-                              // Adicione a lógica para editar o contato
-                            },
-                          ),
+                        children: [ 
                           IconButton(
                             icon: Icon(Icons.delete, color: const Color(0xFFA7005C)),
                             onPressed: () {

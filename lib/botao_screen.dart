@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:async'; // Para usar Timer
-import 'package:url_launcher/url_launcher.dart'; // Importa o url_launcher
-import 'cadastro_screen.dart';    // Importa a tela após o login
-
+import 'cadastro_screen.dart'; // Importa a tela após o login
+import 'package:url_launcher/url_launcher.dart';
 
 class BotaoScreen extends StatefulWidget {
   @override
@@ -19,16 +18,16 @@ class _BotaoScreenState extends State<BotaoScreen> {
   int _dotsCount = 0; // Quantidade de bolinhas a serem mostradas (até 3)
 
   // Número do WhatsApp para enviar a mensagem
-  final String _whatsappNumber = '5519988190652';
 
   // Função para enviar mensagem no WhatsApp
-  void _sendWhatsAppMessage(String message) async {
-    final Uri url = Uri.parse('https://wa.me/$_whatsappNumber?text=$message');
+// Função para realizar uma ligação telefônica
+  void _makePhoneCall(String phoneNumber) async {
+    final Uri phoneUri = Uri(scheme: 'tel', path: phoneNumber);
 
-    if (await canLaunchUrl(url)) {
-      await launchUrl(url);
+    if (await canLaunchUrl(phoneUri)) {
+      await launchUrl(phoneUri);
     } else {
-      throw 'Não foi possível abrir o WhatsApp.';
+      throw 'Não foi possível realizar a ligação para $phoneNumber.';
     }
   }
 
@@ -47,8 +46,8 @@ class _BotaoScreenState extends State<BotaoScreen> {
       // Inicia o segundo timer para exibir o alerta após mais 2 segundos
       _alertTimer = Timer(Duration(seconds: 2), () {
         _showAlert();
-        // Envia mensagem automaticamente após o alerta ser exibido
-        _sendWhatsAppMessage('USUARIO TAL PEDINDO SOCORRO');
+        // Realiza uma ligação automaticamente após o alerta ser exibido
+        _makePhoneCall('19971007789');
         setState(() {
           _status = 'STATUS: CARREGANDO'; // Volta o status ao normal
           _iconColor = const Color(0xFFA7005C); // Volta o ícone à cor original
@@ -131,7 +130,8 @@ class _BotaoScreenState extends State<BotaoScreen> {
             icon: Icon(Icons.add, color: const Color(0xFFA7005C)),
             onPressed: () {
               // Navegar para a tela de cadastro
-              Navigator.push(context, MaterialPageRoute(builder: (context) => CadastroScreen()));
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => CadastroScreen()));
             },
           ),
         ],
@@ -159,7 +159,8 @@ class _BotaoScreenState extends State<BotaoScreen> {
                 },
                 child: Icon(
                   Icons.touch_app,
-                  color: _iconColor, // Cor do ícone que será alterada após 3 segundos
+                  color:
+                      _iconColor, // Cor do ícone que será alterada após 3 segundos
                   size: 150, // Tamanho do ícone
                 ),
               ),

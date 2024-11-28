@@ -1,13 +1,12 @@
 {
-    "users": [
-      {
-        "login": "usuario1",
-        "password": "senha123"
-      },
-      {
-        "login": "usuario2",
-        "password": "senha456"
-      }
-    ]
-  }
-  
+  "users": [
+    {
+      "login": "ale",
+      "password": "123"
+    },
+    {
+      "login": "isa",
+      "password": "123"
+    }
+  ]
+}
