@@ -2,7 +2,7 @@ import 'dart:convert'; // Para manipular JSON
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'cadastro_inicial.dart'; // Importa a tela de cadastro
-import 'botao_screen.dart';    // Importa a tela após o login
+import 'botao_screen.dart'; // Importa a tela após o login
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -45,7 +45,8 @@ class _LoginScreenState extends State<LoginScreen> {
 
     if (user != null) {
       // Login bem-sucedido
-      Navigator.push(context, MaterialPageRoute(builder: (context) => BotaoScreen()));
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => BotaoScreen()));
     } else {
       _showError('Login ou senha incorretos');
     }
@@ -80,6 +81,7 @@ class _LoginScreenState extends State<LoginScreen> {
             SizedBox(height: 30),
             TextField(
               controller: _userController,
+              style: TextStyle(color: Colors.white),
               decoration: InputDecoration(
                 labelText: 'Login',
                 labelStyle: TextStyle(color: Colors.white),
@@ -91,6 +93,7 @@ class _LoginScreenState extends State<LoginScreen> {
             SizedBox(height: 15),
             TextField(
               controller: _passwordController,
+              style: TextStyle(color: Colors.white),
               obscureText: true,
               decoration: InputDecoration(
                 labelText: 'Senha',
@@ -118,7 +121,8 @@ class _LoginScreenState extends State<LoginScreen> {
                 padding: EdgeInsets.symmetric(horizontal: 50, vertical: 15),
               ),
               onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => CadastroScreen()));
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => CadastroScreen()));
               },
               child: Text('CADASTRAR'),
             ),

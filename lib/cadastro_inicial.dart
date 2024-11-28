@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:convert';
-import 'dart:io';
 import 'package:flutter/services.dart' show rootBundle;
-import 'package:path_provider/path_provider.dart';
 
 class CadastroScreen extends StatefulWidget {
   @override
@@ -12,40 +10,19 @@ class CadastroScreen extends StatefulWidget {
 class _CadastroScreenState extends State<CadastroScreen> {
   final _nomeController = TextEditingController();
   final _senhaController = TextEditingController();
-  late File _localDbFile;
-
-  @override
-  void initState() {
-    super.initState();
-    _initializeDb();
-  }
-
-  Future<void> _initializeDb() async {
-    // Obtém o diretório gravável
-    final directory = await getApplicationDocumentsDirectory();
-    final dbFile = File('${directory.path}/db.json');
-
-    // Copia o arquivo de assets, se necessário
-    if (!await dbFile.exists()) {
-      final String response = await rootBundle.loadString('assets/db.json');
-      await dbFile.writeAsString(response);
-    }
-
-    _localDbFile = dbFile;
-  }
 
   Future<void> _saveUser(String nome, String senha) async {
     try {
-      // Lê o conteúdo atual do arquivo
-      final String content = await _localDbFile.readAsString();
-      Map<String, dynamic> db = jsonDecode(content);
+      // Carrega o conteúdo atual do arquivo JSON
+      final String response = await rootBundle.loadString('assets/db.json');
+      Map<String, dynamic> db = jsonDecode(response);
 
       // Adiciona o novo usuário
-      db['users'].add({'nome': nome, 'senha': senha});
+      db['users'].add({'login': nome, 'password': senha});
 
-      // Salva o JSON atualizado
-      await _localDbFile.writeAsString(jsonEncode(db));
-      print("Usuário salvo com sucesso: $db");
+      // Atualiza o JSON (no caso real, seria necessário gravar isso em um backend ou solução local persistente)
+      print(jsonEncode(db)); // Apenas para verificar no console
+      // Para salvar localmente, seria necessário um backend ou lógica de escrita.
     } catch (e) {
       print("Erro ao salvar o usuário: $e");
     }
@@ -66,10 +43,6 @@ class _CadastroScreenState extends State<CadastroScreen> {
               TextButton(
                 onPressed: () {
                   Navigator.of(context).pop(); // Fecha o alerta
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(builder: (context) => MyApp()), // Navega para MyApp()
-                  );
                 },
                 child: Text('OK'),
               ),
@@ -86,7 +59,8 @@ class _CadastroScreenState extends State<CadastroScreen> {
       backgroundColor: Colors.black,
       appBar: AppBar(
         backgroundColor: Colors.black,
-        title: Text('Cadastro', style: TextStyle(color: const Color(0xFFA7005C))),
+        title:
+            Text('Cadastro', style: TextStyle(color: const Color(0xFFA7005C))),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
