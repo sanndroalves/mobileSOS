@@ -1,5 +1,6 @@
+import 'dart:convert'; // Para manipular JSON
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/services.dart' show rootBundle;
 import 'cadastro_inicial.dart'; // Importa a tela de cadastro
 import 'botao_screen.dart';    // Importa a tela após o login
 
@@ -11,24 +12,42 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _userController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  List<dynamic> _users = [];
 
-  Future<void> _login() async {
+  @override
+  void initState() {
+    super.initState();
+    _loadUsers();
+  }
+
+  // Carrega os usuários do arquivo db.json
+  Future<void> _loadUsers() async {
     try {
-      UserCredential userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: _userController.text,
-        password: _passwordController.text,
-      );
-      // Se o login for bem-sucedido, navega para BotaoScreen
+      final String response = await rootBundle.loadString('assets/db.json');
+      final Map<String, dynamic> data = json.decode(response);
+      setState(() {
+        _users = data['users'];
+      });
+    } catch (e) {
+      _showError('Erro ao carregar os dados');
+    }
+  }
+
+  // Verifica se o login e senha estão corretos
+  Future<void> _login() async {
+    final String login = _userController.text;
+    final String password = _passwordController.text;
+
+    final user = _users.firstWhere(
+      (user) => user['login'] == login && user['password'] == password,
+      orElse: () => null,
+    );
+
+    if (user != null) {
+      // Login bem-sucedido
       Navigator.push(context, MaterialPageRoute(builder: (context) => BotaoScreen()));
-    } on FirebaseAuthException catch (e) {
-      // Tratamento de erro
-      if (e.code == 'user-not-found') {
-        _showError('Usuário não encontrado');
-      } else if (e.code == 'wrong-password') {
-        _showError('Senha incorreta');
-      } else {
-        _showError('Erro ao realizar o login');
-      }
+    } else {
+      _showError('Login ou senha incorretos');
     }
   }
 

@@ -1,14 +1,9 @@
 import 'package:flutter/material.dart';
-import 'login_screen.dart';    // Importando a tela de login
-import 'cadastro_screen.dart'; // Importando a tela de cadastro
-import 'botao_screen.dart';    // Importando a tela após o login
-import 'package:firebase_core/firebase_core.dart';
+import 'login_screen.dart'; // Importando a tela de login
 
-void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+void main() {
   runApp(MyApp());
-} 
+}
 
 class MyApp extends StatelessWidget {
   @override
